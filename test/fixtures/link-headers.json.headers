@@ -1,0 +1,17 @@
+content-type: application/json; charset=utf-8
+x-powered-by: Express
+cache-control: public, s-maxage=604833, max-age=300
+access-control-allow-origin: *
+etag: W/"46340-Yr+2oE9Iv6OfAVeLztdDz59wHF4"
+via: 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+date: Wed, 02 Jun 2021 05:38:41 GMT
+age: 55589
+x-served-by: cache-dca12928-DCA, cache-itm18833-ITM
+x-cache: HIT, HIT
+x-cache-hits: 1, 1
+vary: Accept-Encoding
+strict-transport-security: max-age=86400
+content-length: 287552
+link: </feed>; rel="self"
+link: <https://hub.example.com/>; rel="hub"
