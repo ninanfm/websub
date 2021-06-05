@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/poying/websub.git"
+  },
   "devDependencies": {
     "@types/convict": "^6.0.2",
     "@types/he": "^1.1.1",
