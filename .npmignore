@@ -1,0 +1,6 @@
+build
+test
+.git
+node_modules
+jest.config.js
+tsconfig.json
