@@ -12,6 +12,7 @@ import debug from './debug';
 
 export * from './discovery';
 export * from './storage';
+export {createApp as createKoaApp} from './koa';
 
 export interface SubscriberOptions {
   storage: Storage;
