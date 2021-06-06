@@ -26,3 +26,10 @@ $ yarn add @poying/websub
 ### Create subscriber
 
 You can look into [this file](./src/cmd/subscriber.ts) to see how to create and use `Subscriber`.
+
+## License
+
+@poying/websub offers two licenses:
+
+1. [MIT](./LICENSE)
+2. [COMMERCIAL-LICENSE](./COMMERCIAL-LICENSE)
