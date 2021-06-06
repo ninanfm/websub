@@ -4,7 +4,7 @@ import {DiscoveryResult, LinkParser} from './types';
 
 export class XMLParser implements LinkParser {
   isSupport(contentType: string): boolean {
-    return /\/(xml|html)/.test(contentType);
+    return /\/((.*?\+)?xml|html)/.test(contentType);
   }
 
   parse(res: Response<string>): Partial<DiscoveryResult> {
