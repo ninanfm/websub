@@ -13,16 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: GoogleCloudPlatform/release-please-action@v2
+        id: release
         with:
           release-type: node
           package-name: '@poying/websub'
           token: ${{ secrets.NPM_TOKEN }}
       - uses: actions/checkout@v2
+        if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v2
         with:
           node-version: 14
+        if: ${{ steps.release.outputs.release_created }}
       - run: yarn --frozen-lockfile
+        if: ${{ steps.release.outputs.release_created }}
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
           registry: https://npm.pkg.github.com
+        if: ${{ steps.release.outputs.release_created }}
