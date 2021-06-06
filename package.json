@@ -37,8 +37,6 @@
     "clean": "gts clean",
     "build": "tsc",
     "fix": "gts fix",
-    "prepare": "yarn build",
-    "pretest": "yarn build",
     "posttest": "yarn lint"
   },
   "dependencies": {
