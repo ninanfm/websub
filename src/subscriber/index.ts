@@ -181,7 +181,10 @@ export class Subscriber extends EventEmitter implements Events {
         ctx.headers['hub.reason'] ||
         'subscribtion is denied for unknown reason';
 
-      this.emit('denied', new SubscriptionError(reason));
+      this.emit('denied', new SubscriptionError(reason), {
+        subscriptionId,
+        topicUrl: topic,
+      });
 
       return {
         status: 200,
@@ -195,11 +198,15 @@ export class Subscriber extends EventEmitter implements Events {
 
       if (subscription && subscription.topicUrl === topic) {
         const eventName = mode === 'subscribe' ? 'subscribed' : 'unsubscribed';
-        const args =
+        const data =
           mode === 'subscribe'
-            ? [subscriptionId, topic, Number(leaseSeconds || 0)]
-            : [subscriptionId, topic];
-        this.emit(eventName, ...args);
+            ? {
+                subscriptionId,
+                topicUrl: topic,
+                leaseSeconds: Number(leaseSeconds || 0),
+              }
+            : {subscriptionId, topicUrl: topic};
+        this.emit(eventName, data);
 
         return {
           status: 200,
@@ -234,13 +241,12 @@ export class Subscriber extends EventEmitter implements Events {
       };
     }
 
-    this.emit(
-      'update',
+    this.emit('update', {
       subscriptionId,
-      subscription.topicUrl,
-      ctx.body,
-      this.validateBody(ctx, subscription.secret)
-    );
+      topicUrl: subscription.topicUrl,
+      body: ctx.body,
+      isValid: this.validateBody(ctx, subscription.secret),
+    });
 
     return {
       status: 200,

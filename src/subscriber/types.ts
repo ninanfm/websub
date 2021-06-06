@@ -16,7 +16,10 @@ export interface Response {
 export interface Events {
   on(
     event: 'denied',
-    listener: (err: Error, subscriptionId: string, topicUrl: string) => void
+    listener: (
+      err: Error,
+      data: {subscriptionId: string; topicUrl: string}
+    ) => void
   ): void;
   on(
     event: 'subscribed',
@@ -28,16 +31,16 @@ export interface Events {
   ): void;
   on(
     event: 'unsubscribed',
-    listener: (subscriptionId: string, topicUrl: string) => void
+    listener: (data: {subscriptionId: string; topicUrl: string}) => void
   ): void;
   on(
     event: 'update',
-    listener: (
-      subscriptionId: string,
-      topicUrl: string,
-      body: string,
-      isValid: boolean
-    ) => void
+    listener: (data: {
+      subscriptionId: string;
+      topicUrl: string;
+      body: string;
+      isValid: boolean;
+    }) => void
   ): void;
 }
 
