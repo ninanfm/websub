@@ -30,12 +30,12 @@ const {app, subscriber} = createApp({
   storage: new MemoryStorage(),
 });
 
-subscriber.on('subscribed', (...args) => {
-  console.log('subscribed', args);
+subscriber.on('subscribed', data => {
+  console.log('subscribed', data);
 });
 
-subscriber.on('update', (...args) => {
-  console.log('update', args);
+subscriber.on('update', data => {
+  console.log('update', data);
 });
 
 app.listen(config.get('port'), config.get('host'), () => {

@@ -18,7 +18,16 @@ export interface SubscriberOptions {
   baseUrl: string;
 }
 
-export class Subscriber extends EventEmitter implements Events {
+export declare interface Subscriber {
+  on<U extends keyof Events>(event: U, listener: Events[U]): this;
+
+  emit<U extends keyof Events>(
+    event: U,
+    ...args: Parameters<Events[U]>
+  ): boolean;
+}
+
+export class Subscriber extends EventEmitter {
   private discoverer = new Discoverer();
   private storage: Storage;
   private tempStorage: Storage = new TempStorage();

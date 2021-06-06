@@ -14,34 +14,22 @@ export interface Response {
 }
 
 export interface Events {
-  on(
-    event: 'denied',
-    listener: (
-      err: Error,
-      data: {subscriptionId: string; topicUrl: string}
-    ) => void
-  ): void;
-  on(
-    event: 'subscribed',
-    listener: (
-      subscriptionId: string,
-      topicUrl: string,
-      leaseSeconds: number
-    ) => void
-  ): void;
-  on(
-    event: 'unsubscribed',
-    listener: (data: {subscriptionId: string; topicUrl: string}) => void
-  ): void;
-  on(
-    event: 'update',
-    listener: (data: {
-      subscriptionId: string;
-      topicUrl: string;
-      body: string;
-      isValid: boolean;
-    }) => void
-  ): void;
+  denied: (
+    err: Error,
+    data: {subscriptionId: string; topicUrl: string}
+  ) => void;
+  subscribed: (data: {
+    subscriptionId: string;
+    topicUrl: string;
+    leaseSeconds: number;
+  }) => void;
+  unsubscribed: (data: {subscriptionId: string; topicUrl: string}) => void;
+  update: (data: {
+    subscriptionId: string;
+    topicUrl: string;
+    body?: string;
+    isValid: boolean;
+  }) => void;
 }
 
 export interface Subscription {
