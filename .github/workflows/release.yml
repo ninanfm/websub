@@ -30,7 +30,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn --frozen-lockfile
-        if: ${{ steps.release.outputs.release_created }} && steps.cache-deps.outputs.cache-hit != 'true'
+        if: ${{ steps.release.outputs.release_created && steps.cache-deps.outputs.cache-hit != 'true' }}
       - run: yarn build
         if: ${{ steps.release.outputs.release_created }}
       - uses: JS-DevTools/npm-publish@v1
