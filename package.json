@@ -1,6 +1,6 @@
 {
   "name": "@poying/websub",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "build/src/index.js",
   "license": "MIT",
   "repository": {
