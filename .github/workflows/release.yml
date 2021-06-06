@@ -17,11 +17,6 @@ jobs:
           release-type: node
           package-name: '@poying/websub'
           token: ${{ secrets.NPM_TOKEN }}
-
-  publish:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
