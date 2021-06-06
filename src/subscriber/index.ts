@@ -8,6 +8,7 @@ import {Discoverer} from './discovery';
 import {SubscriptionError} from './errors';
 import {Storage, TempStorage} from './storage';
 import {Events, RequestContext, Response} from './types';
+import debug from './debug';
 
 export * from './discovery';
 export * from './storage';
@@ -31,11 +32,13 @@ export class Subscriber extends EventEmitter implements Events {
 
   private getCallbackUrl(subscriptionId: string): string {
     const url = new URL(this.baseUrl);
-    url.pathname += '/' + subscriptionId;
+    url.pathname = url.pathname.replace(/^\/$/, '') + '/' + subscriptionId;
     return url.toString();
   }
 
   private async sendRequest(hubUrl: string, form: FormData): Promise<void> {
+    debug(`send request to hub with payload ${JSON.stringify(form)}`);
+
     const response = await got
       .post(hubUrl, {body: form, followRedirect: true})
       .catch(err => {
@@ -45,6 +48,8 @@ export class Subscriber extends EventEmitter implements Events {
         throw err;
       });
 
+    debug(`response with status code ${response.statusCode}`);
+
     if (response.statusCode >= 400) {
       throw new SubscriptionError(
         `request failed with status code ${response.statusCode}: ${response.body}`
@@ -53,11 +58,14 @@ export class Subscriber extends EventEmitter implements Events {
   }
 
   private validateBody(ctx: RequestContext, secret?: string): boolean {
-    if (!secret) {
+    const signature = ctx.headers['X-Hub-Signature'];
+    const body = ctx.body;
+
+    if (!(secret && body && signature)) {
       return true;
     }
 
-    const [algo, ...rest] = ctx.headers['X-Hub-Signature']?.split('=') || [];
+    const [algo, ...rest] = signature || [];
     const checksum = rest.join('=');
 
     const supported = Boolean(
@@ -73,19 +81,21 @@ export class Subscriber extends EventEmitter implements Events {
       return false;
     }
 
-    const hash = createHmac(algo, secret).update(ctx.body).digest('hex');
+    const hash = createHmac(algo, secret).update(body).digest('hex');
 
     return hash === checksum;
   }
 
   async subscribe(
     topic: string,
-    options?: {
+    options: {
       leaseSeconds?: number;
       secret?: string;
       subscriptionId?: string;
-    }
+    } = {}
   ): Promise<string> {
+    debug(`subscribe ${topic} with options ${JSON.stringify(options)}`);
+
     const subscriptionId = options?.subscriptionId || uuid();
     const {hubUrl, selfUrl} = await this.discoverer.discover(topic);
 
@@ -115,12 +125,14 @@ export class Subscriber extends EventEmitter implements Events {
 
   async unsubscribe(
     topic: string,
-    options?: {
+    options: {
       leaseSeconds?: number;
       secret?: string;
       subscriptionId?: string;
-    }
+    } = {}
   ): Promise<string> {
+    debug(`unsubscribe ${topic} with options ${JSON.stringify(options)}`);
+
     const subscriptionId = options?.subscriptionId || uuid();
     const {hubUrl, selfUrl} = await this.discoverer.discover(topic);
 
@@ -148,6 +160,13 @@ export class Subscriber extends EventEmitter implements Events {
     const topic = ctx.query['hub.topic'];
     const leaseSeconds = ctx.query['hub.lease_seconds'];
     const challenge = ctx.query['hub.challenge'];
+
+    debug('validate subscription', {
+      mode,
+      topic,
+      leaseSeconds,
+      challenge,
+    });
 
     if (!mode || !topic) {
       return {
@@ -199,6 +218,13 @@ export class Subscriber extends EventEmitter implements Events {
     ctx: RequestContext,
     subscriptionId: string
   ): Promise<Response> {
+    debug('receive update', {
+      subscriptionId,
+      topic: ctx.query['hub.topic'],
+      body: ctx.body,
+      checksum: ctx.headers['X-Hub-Signature'],
+    });
+
     const subscription = await this.storage.get(subscriptionId);
 
     if (!subscription) {
@@ -208,9 +234,13 @@ export class Subscriber extends EventEmitter implements Events {
       };
     }
 
-    if (this.validateBody(ctx, subscription.secret)) {
-      this.emit('update', subscriptionId, subscription.topicUrl, ctx.body);
-    }
+    this.emit(
+      'update',
+      subscriptionId,
+      subscription.topicUrl,
+      ctx.body,
+      this.validateBody(ctx, subscription.secret)
+    );
 
     return {
       status: 200,

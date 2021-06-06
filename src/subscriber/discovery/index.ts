@@ -4,6 +4,7 @@ import {DiscoveryError} from '../errors';
 import {HeaderParser} from './header-parser';
 import {DiscoveryResult, LinkParser} from './types';
 import {XMLParser} from './xml-parser';
+import debug from './debug';
 
 export * from './types';
 
@@ -15,6 +16,8 @@ export class Discoverer {
   }
 
   async discover(url: string): Promise<DiscoveryResult> {
+    debug(`discover ${url}`);
+
     const result: Partial<DiscoveryResult> = {};
 
     try {
@@ -23,8 +26,14 @@ export class Discoverer {
 
       for (const parser of this.parsers) {
         if (parser.isSupport(contentType)) {
-          Object.assign(result, parser.parse(res));
+          debug(`using ${parser.constructor.name} to parse response`);
+
+          const parsingResult = parser.parse(res);
+          Object.assign(result, parsingResult);
+          debug(`parsing result ${JSON.stringify(parsingResult)}`);
+
           if (result.hubUrl && result.selfUrl) {
+            debug('all required informations have been found');
             break;
           }
         }
@@ -41,10 +50,14 @@ export class Discoverer {
       throw new DiscoveryError('could not find self url');
     }
 
-    return {
+    const normalizedResult = {
       hubUrl: normalizeUrl(url, result.hubUrl),
       selfUrl: normalizeUrl(url, result.selfUrl),
     };
+
+    debug(`result ${JSON.stringify(normalizedResult)}`);
+
+    return normalizedResult;
   }
 }
 

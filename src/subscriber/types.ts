@@ -32,7 +32,12 @@ export interface Events {
   ): void;
   on(
     event: 'update',
-    listener: (subscriptionId: string, topicUrl: string, body: string) => void
+    listener: (
+      subscriptionId: string,
+      topicUrl: string,
+      body: string,
+      isValid: boolean
+    ) => void
   ): void;
 }
 
