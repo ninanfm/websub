@@ -1,6 +1,5 @@
 import * as convict from 'convict';
-import {MemoryStorage} from '../subscriber';
-import {createApp} from '../subscriber/koa';
+import {MemoryStorage, createKoaApp} from '../';
 
 const config = convict({
   host: {
@@ -25,7 +24,7 @@ const config = convict({
   },
 });
 
-const {app, subscriber} = createApp({
+const {app, subscriber} = createKoaApp({
   baseUrl: config.get('baseUrl')!,
   storage: new MemoryStorage(),
 });
