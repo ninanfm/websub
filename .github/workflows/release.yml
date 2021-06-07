@@ -16,7 +16,7 @@ jobs:
         id: release
         with:
           release-type: node
-          package-name: '@poying/websub'
+          package-name: '@ninanfm/websub'
           token: ${{ secrets.NPM_TOKEN }}
       - uses: actions/checkout@v2
         if: ${{ steps.release.outputs.release_created }}

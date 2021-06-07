@@ -1,6 +1,6 @@
-# @poying/websub
+# @ninanfm/websub
 
-`@poying/websub` is an Node.js implementation of [WebSub](https://www.w3.org/TR/websub). This project is work in progress, We currently only implement [Subscriber](./src/subscriber).
+`@ninanfm/websub` is an Node.js implementation of [WebSub](https://www.w3.org/TR/websub). This project is work in progress, We currently only implement [Subscriber](./src/subscriber).
 
 ## How To Use
 
@@ -18,9 +18,9 @@ add file `.npmrc` with the following content:
 After that, you can install the package as noraml:
 
 ```bash
-$ npm i @poying/websub
+$ npm i @ninanfm/websub
 # or
-$ yarn add @poying/websub
+$ yarn add @ninanfm/websub
 ```
 
 ### Create subscriber
@@ -29,7 +29,7 @@ You can look into [this file](./src/cmd/subscriber.ts) to see how to create and 
 
 ## License
 
-@poying/websub offers two licenses:
+@ninanfm/websub offers two licenses:
 
 1. [MIT](./LICENSE)
 2. [COMMERCIAL-LICENSE](./COMMERCIAL-LICENSE)
