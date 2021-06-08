@@ -1,21 +1,18 @@
 # @ninanfm/websub
 
-`@ninanfm/websub` is an Node.js implementation of [WebSub](https://www.w3.org/TR/websub). This project is work in progress, We currently only implement [Subscriber](./src/subscriber).
+`@ninanfm/websub` is an Node.js implementation of [WebSub](https://www.w3.org/TR/websub). This project is working in progress, we currently only implement [Subscriber](./src/subscriber).
 
 ## How To Use
 
 ### Installation
 
-We only publish the package to GitHub registry,
-so you have to tell npm/yarn to install the package from GitHub.
-It's pretty simple, in the root folder of your project,
-add file `.npmrc` with the following content:
+We only publish the package to the GitHub registry, you have to tell npm/yarn to install the package from GitHub. It's pretty simple, in the root folder of your project, add file `.npmrc` with the following content:
 
 ```
  @poying:registry=https://npm.pkg.github.com
 ```
 
-After that, you can install the package as noraml:
+After that, you can install the package as normal:
 
 ```bash
 $ npm i @ninanfm/websub
