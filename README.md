@@ -9,7 +9,7 @@
 We only publish the package to the GitHub registry, you have to tell npm/yarn to install the package from GitHub. It's pretty simple, in the root folder of your project, add file `.npmrc` with the following content:
 
 ```
- @poying:registry=https://npm.pkg.github.com
+ @ninanfm:registry=https://npm.pkg.github.com
 ```
 
 After that, you can install the package as normal:
