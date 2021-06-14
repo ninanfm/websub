@@ -1,12 +1,20 @@
 # @ninanfm/websub
 
-`@ninanfm/websub` is an Node.js implementation of [WebSub](https://www.w3.org/TR/websub). This project is working in progress, we currently only implement [Subscriber](./src/subscriber).
+> This project is still working in progress, not well tested, so take your own risk to use it.
+
+`@ninanfm/websub` is an Node.js implementation of [WebSub](https://www.w3.org/TR/websub).
+
+## Features
+
+- [X] Subscriber
+- [ ] Publisher
+- [ ] Hub (we won't implement this part of specification, because almost all of the publishers are using Google's hub, no one need to maintain their own hub.)
 
 ## How To Use
 
 ### Installation
 
-We only publish the package to the GitHub registry, you have to tell npm/yarn to install the package from GitHub. It's pretty simple, in the root folder of your project, add file `.npmrc` with the following content:
+We only publish the package to the GitHub registry, you have to tell npm/yarn to install the package from GitHub. It's pretty simple, in the root folder of your project, create a file called `.npmrc` with the following content:
 
 ```
  @ninanfm:registry=https://npm.pkg.github.com
@@ -26,7 +34,4 @@ You can look into [this file](./src/cmd/subscriber.ts) to see how to create and 
 
 ## License
 
-@ninanfm/websub offers two licenses:
-
-1. [MIT](./LICENSE)
-2. [COMMERCIAL-LICENSE](./COMMERCIAL-LICENSE)
+[MIT](./LICENSE)
